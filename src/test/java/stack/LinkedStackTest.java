@@ -10,10 +10,13 @@ import org.junit.Test;
 public class LinkedStackTest {
 
   private StackInterface<Integer> stack;
+  
+  private StackInterface<String> stringStack;
 
   @Before
   public void setup() {
     stack = new LinkedStack<Integer>();
+    stringStack = new LinkedStack<String>();
   }
 
   @Test (timeout = 5000)
@@ -39,6 +42,31 @@ public class LinkedStackTest {
     t = stack.pop();
     assertEquals("The popped element should be 5", new Integer(5), t);
     assertTrue("The stack should be empty.", stack.isEmpty());
+    
+  }
+  @Test(timeout = 5000)
+  public void testStringStack() {
+	  assertTrue("Stack should be empty after being constructed.", stringStack.isEmpty());
+	  assertEquals("Stack should contain zero elements after being constructed.", 0 , stringStack.size());
+	  
+	  stringStack.push("truck");
+	  assertFalse("Stack should not be empty.", stringStack.isEmpty());
+	  assertEquals("The top element should be truck", new String("truck"), stringStack.top());
+	  assertEquals("The stack should contain one element.", 1, stringStack.size());
+	  
+	  stringStack.push("chicken");
+	  assertEquals("The top element should be chicken", new String("chicken"), stringStack.top());
+	  assertEquals("The stack should contain two elements.", 2, stringStack.size());
+	  
+	  String t = stringStack.pop();
+	  assertEquals("The popped element should be chicken", new String("chicken"), t);
+	  assertEquals("The top element should be truck", new String("truck"), stringStack.top());
+	  assertEquals("The stack should contain one element.", 1, stringStack.size());
+	  assertFalse("The stack should not be empty.", stringStack.isEmpty());
+	  
+	  t = stringStack.pop();
+	  assertEquals("The popped element should be 5", new String("truck"), t);
+	  assertTrue("The stack should be empty.", stack.isEmpty());
   }
 
   @Test (timeout = 5000, expected = StackUnderflowException.class)
@@ -49,6 +77,22 @@ public class LinkedStackTest {
   @Test (timeout = 5000, expected = StackUnderflowException.class)
   public void testStackUnderflowTop() {
     stack.top();
+  }
+  @Test (timeout = 5000, expected = StackUnderflowException.class)
+	  public void testStackUnderflowPush2AndPop3() {
+		  stringStack.push("hi");
+		  stringStack.push("there");
+		  stringStack.pop();
+		  stringStack.pop();
+		  stringStack.pop();
+	  }
+  @Test (timeout = 5000, expected = StackUnderflowException.class)
+  public void testStackUnderflowPush2AndPop2AndTop() {
+	  stringStack.push("hi");
+	  stringStack.push("there");
+	  stringStack.pop();
+	  stringStack.pop();
+	  stringStack.top();
   }
 
 

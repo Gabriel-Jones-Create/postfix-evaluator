@@ -7,6 +7,7 @@ import java.util.Scanner;
 import language.Operand;
 import language.Operator;
 import language.arith.DivOperator;
+import language.arith.ExponentOperator;
 import language.arith.MultOperator;
 import language.arith.NegateOperator;
 import language.arith.PlusOperator;
@@ -113,6 +114,13 @@ public class ArithPostFixParser implements PostFixParser<Integer> {
         return new NegateOperator();
       }
     });
+    operators.put("^", new OperatorConstructor() {
+
+        @Override
+        public Operator<Integer> construct() {
+          return new ExponentOperator();
+        }
+      });
   }
 
   private final String expr;

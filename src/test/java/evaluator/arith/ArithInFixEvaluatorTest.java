@@ -9,13 +9,13 @@ import stack.StackUnderflowException;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ArithPostFixEvaluatorTest {
+public class ArithInFixEvaluatorTest {
 
   private PostFixEvaluator<Integer> evaluator;
 
   @Before
   public void setup() {
-    evaluator = new ArithPostFixEvaluator();
+    evaluator = new ArithInFixEvaluator();
   }
 
   @Test (timeout = 5000)
@@ -26,13 +26,13 @@ public class ArithPostFixEvaluatorTest {
 
   @Test (timeout = 5000)
   public void testEvaluatePlus() {
-    Integer result = evaluator.evaluate("1 2 +");
+    Integer result = evaluator.evaluate("1 + 2");
     assertEquals(new Integer(3), result);
 
-    result = evaluator.evaluate("1 2 3 + +");
+    result = evaluator.evaluate("1 + 2 + 3");
     assertEquals(new Integer(6), result);
 
-    result = evaluator.evaluate("10000 1000 100 10 1 + + + +");
+    result = evaluator.evaluate("10000 + 1000 + 100 + 10 + 1");
     assertEquals(new Integer(11111), result);
   }
 

@@ -1,8 +1,11 @@
 package evaluator.arith;
 
+import evaluator.IllegalPostFixExpressionException;
 import evaluator.PostFixEvaluator;
 import language.Operand;
+import language.Operator;
 import parser.arith.ArithPostFixParser;
+import stack.LinkedStack;
 import stack.StackInterface;
 
 
@@ -18,7 +21,7 @@ public class ArithPostFixEvaluator implements PostFixEvaluator<Integer> {
    * Constructs an {@link ArithPostFixEvaluator}.
    */
   public ArithPostFixEvaluator() {
-    this.stack = null; //TODO Initialize to your LinkedStack
+	  this.stack = new LinkedStack<Operand<Integer>>(); ; //TODO Initialize to your LinkedStack
   }
 
   /**
@@ -35,17 +38,29 @@ public class ArithPostFixEvaluator implements PostFixEvaluator<Integer> {
       switch (parser.nextType()) { 
         case OPERAND:
           //TODO What do we do when we see an operand?
+        	stack.push(parser.nextOperand());
           break;
         case OPERATOR:
           //TODO What do we do when we see an operator?
+        	//Grab the operator from the parser then based on the number of arguments we pop the appropriate amount from the stack set the operands perform the operation and push the result onto the stack
+        	Operator<Integer> operator = parser.nextOperator();
+        	for(int i = operator.getNumberOfArguments()-1; i >= 0; i--) {
+        		operator.setOperand(i, stack.pop());
+        	}
+        	stack.push(operator.performOperation());
           break;
         default:
           //TODO If we get here, something went terribly wrong
+        	throw new IllegalPostFixExpressionException();
+      
       }
     }
 
     //TODO What do we return?
-    return null;
+    if(stack.size()>1) {
+    	throw new IllegalPostFixExpressionException();
+    }
+    return stack.pop().getValue();
   }
 
 }
