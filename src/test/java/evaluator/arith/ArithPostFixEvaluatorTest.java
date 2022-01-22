@@ -85,6 +85,20 @@ public class ArithPostFixEvaluatorTest {
     result = evaluator.evaluate("2 -1 ^");
     assertEquals(new Integer(0), result);
   }
+  @Test (timeout = 5000)
+  public void testMultipleOperators() {
+    Integer result = evaluator.evaluate("1 3 2 ^ *");
+    assertEquals(new Integer(9), result);
+
+    result = evaluator.evaluate("2 3 2 ^ + 1 /");
+    assertEquals(new Integer(11), result);
+    
+    result = evaluator.evaluate("-2 2 ^ 8 9 / *");
+    assertEquals(new Integer(0), result);
+
+    result = evaluator.evaluate("2 -1 7 ^ ! *");
+    assertEquals(new Integer(2), result);
+  }
 
   @Test (timeout = 5000, expected = IllegalPostFixExpressionException.class)
   public void testInvalidExpression() {
